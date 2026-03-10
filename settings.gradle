@@ -1,0 +1,3 @@
+rootProject.name = 'nareum-studio'
+include 'nareum-admin'
+include 'nareum-server'
