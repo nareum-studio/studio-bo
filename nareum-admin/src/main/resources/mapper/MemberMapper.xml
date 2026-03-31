@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nareumadmin.mapper.MemberMapper">
+  <insert id="signup">
+    INSERT INTO member
+    (ID, PASSWORD, NAME, PHONE, ROLE, STATUS, LAST_LOGIN_AT, CREATED_AT, UPDATED_AT)
+    VALUES (#{id}, #{password}, #{name}, #{phone}, #{role}, #{status},
+            #{lastLoginAt}, #{createdAt}, #{updatedAt})
+  </insert>
+
+  <select id="findById">
+    SELECT *
+    FROM member
+    WHERE ID = #{id}
+  </select>
+
+</mapper>
