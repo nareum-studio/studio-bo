@@ -35,6 +35,9 @@ dependencies {
     implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.4.0")
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
 
+    // AWS S3 (S3Config에 직접 S3Client 설정 필요 없는 버전)
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'

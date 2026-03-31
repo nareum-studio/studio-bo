@@ -1,6 +1,6 @@
 package com.nareumadmin.controller;
 
-import com.nareumadmin.common.dto.ResponseDto;
+import com.nareumadmin.common.dto.ResponseDTO;
 import com.nareumadmin.dto.AuthDTO;
 import com.nareumadmin.error.exception.AuthException;
 import com.nareumadmin.error.type.AuthError;
@@ -33,7 +33,7 @@ public class AuthController {
     public ResponseEntity<?> signup(@RequestBody AuthDTO.SignupRequest request) {
         AuthDTO.SignupResponse response = authService.signup(request);
 
-        return ResponseEntity.ok(new ResponseDto<>("회원가입 성공", response));
+        return ResponseEntity.ok(new ResponseDTO<>("회원가입 성공", response));
     }
 
     @PostMapping("/login")
@@ -53,7 +53,7 @@ public class AuthController {
                 context
             );
 
-            return ResponseEntity.ok(new ResponseDto<>("로그인 성공", null));
+            return ResponseEntity.ok(new ResponseDTO<>("로그인 성공", null));
         } catch (BadCredentialsException e) {
             throw new AuthException(AuthError.UNAUTHORIZED);
         }

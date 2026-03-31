@@ -1,6 +1,6 @@
 package com.nareumadmin.error;
 
-import com.nareumadmin.common.dto.ResponseDto;
+import com.nareumadmin.common.dto.ResponseDTO;
 import com.nareumadmin.error.exception.AuthException;
 import com.nareumadmin.error.exception.ServiceException;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<?> authException(AuthException e) {
-        ResponseDto<?> response = ResponseDto.builder()
+        ResponseDTO<?> response = ResponseDTO.builder()
             .message(e.getMessage())
             .data(null)
             .build();
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<?> serviceException(ServiceException e) {
-        ResponseDto<?> response = ResponseDto.builder()
+        ResponseDTO<?> response = ResponseDTO.builder()
             .message(e.getMessage())
             .data(null)
             .build();
