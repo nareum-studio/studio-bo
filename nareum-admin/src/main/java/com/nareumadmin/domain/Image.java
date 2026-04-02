@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class File {
+public class Image {
 
     private Long id;
     private String originalName;
     private String extension;
     private String url;
+    private String s3Key;
     private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

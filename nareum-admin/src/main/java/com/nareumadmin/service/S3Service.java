@@ -1,5 +1,6 @@
 package com.nareumadmin.service;
 
+import com.nareumadmin.dto.ImageDTO.UploadResult;
 import java.io.IOException;
 import java.net.URL;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Utilities;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
@@ -25,7 +27,7 @@ public class S3Service {
     @Value("${spring.cloud.aws.region.static}")
     private String region;
 
-    public URL upload(MultipartFile file, String category) {
+    public UploadResult upload(MultipartFile file, String category) {
         String fileName = category + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 
         try {
@@ -41,6 +43,20 @@ public class S3Service {
             throw new RuntimeException("파일 업로드 실패", e);
         }
 
-        return s3Utilities.getUrl(builder -> builder.bucket(bucket).key(fileName).toString());
+        URL url = s3Utilities.getUrl(builder -> builder.bucket(bucket).key(fileName));
+
+        return UploadResult.builder()
+            .url(url)
+            .s3Key(fileName)
+            .build();
+    }
+
+    public void deleteFile(String s3Key) {
+        DeleteObjectRequest request = DeleteObjectRequest.builder()
+            .bucket(bucket)
+            .key(s3Key)
+            .build();
+
+        s3Client.deleteObject(request);
     }
 }

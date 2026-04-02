@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nareumadmin.mapper.ImageMapper">
+
+  <insert id="upload" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO image
+    (ID, ORIGINAL_NAME, EXTENSION, URL, S3_KEY, CATEGORY, CREATED_AT, UPDATED_AT)
+    VALUES (#{id}, #{originalName}, #{extension}, #{url}, #{s3Key}, #{category}, #{createdAt},
+            #{updatedAt})
+  </insert>
+
+  <select id="findByIds" resultType="com.nareumadmin.domain.Image">
+    SELECT ID, ORIGINAL_NAME, URL, S3_KEY, CATEGORY, EXTENSION, CREATED_AT, UPDATED_AT
+    FROM image
+    WHERE id IN
+    <foreach collection="list" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <delete id="deleteByIds">
+    DELETE FROM image
+    WHERE id IN
+    <foreach collection="list" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="getImageList" resultType="com.nareumadmin.domain.Image">
+    SELECT ID, ORIGINAL_NAME, URL, CATEGORY, EXTENSION, CREATED_AT, UPDATED_AT
+    FROM image
+    WHERE category =  #{category}
+  </select>
+</mapper>

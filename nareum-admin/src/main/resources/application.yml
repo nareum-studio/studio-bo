@@ -13,13 +13,13 @@ spring:
       max-file-size: 10MB
       max-request-size: 50MB
 
-  mybatis:
-    mapper-locations: classpath*:mapper/**/*.xml
-    type-aliases-package: com.nareumadmin.domain
-    configuration:
-      jdbc-type-for-null: VARCHAR  # 이거 없으면 mybatis로 null 값을 넣을 수 없음
-      map-underscore-to-camel-case: true
-      default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.nareumadmin.domain
+  configuration:
+    jdbc-type-for-null: VARCHAR  # 이거 없으면 mybatis로 null 값을 넣을 수 없음
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
 
 server:
   port: 8081
