@@ -1,7 +1,6 @@
 package com.nareumadmin.controller;
 
 import com.nareumadmin.common.dto.ResponseDTO;
-import com.nareumadmin.dto.ImageDTO.UpdateRequest;
 import com.nareumadmin.dto.ImageDTO.UploadResponse;
 import com.nareumadmin.service.ImageService;
 import java.util.List;
@@ -44,10 +43,9 @@ public class ImageController {
     public ResponseEntity<?> updateFiles(
         @RequestPart(value = "newImages", required = false) List<MultipartFile> files,
         @RequestParam String category,
-        @RequestPart(required = false) UpdateRequest deleteImages
+        @RequestParam(required = false) List<Long> deleteImages
     ) {
-        List<Long> deleteFileIds = deleteImages != null ? deleteImages.getDeleteImages() : null;
-        List<UploadResponse> responses = imageService.updateFiles(files, category, deleteFileIds);
+        List<UploadResponse> responses = imageService.updateFiles(files, category, deleteImages);
         return ResponseEntity.ok(new ResponseDTO<>("이미지 수정 성공", responses));
     }
 }

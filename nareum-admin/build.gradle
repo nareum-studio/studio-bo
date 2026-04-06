@@ -28,12 +28,7 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.7'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
-    // AWS Parameter Store
-    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.4.0")
-    implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
 
     // AWS S3 (S3Config에 직접 S3Client 설정 필요 없는 버전)
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'

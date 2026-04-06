@@ -9,15 +9,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ImageService {
 
     private final ImageMapper imageMapper;
     private final S3Service s3Service;
 
+    @Transactional(readOnly = true)
     public List<UploadResponse> getImageList(String category) {
         return imageMapper.getImageList(category).stream().map(UploadResponse::of).toList();
     }
