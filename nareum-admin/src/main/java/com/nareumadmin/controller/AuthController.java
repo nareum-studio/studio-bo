@@ -6,6 +6,7 @@ import com.nareumadmin.error.exception.AuthException;
 import com.nareumadmin.error.type.AuthError;
 import com.nareumadmin.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthDTO.LoginRequest request,
-        HttpServletRequest httpRequest) {
+        HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getId(), request.getPassword())
@@ -52,6 +53,16 @@ public class AuthController {
                 HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 context
             );
+
+            // ResponseCookie cookie = ResponseCookie.from("JSESSIONID", session.getId())
+            //     .domain(".nareumdaumm.com")
+            //     .path("/")
+            //     .httpOnly(true)
+            //     .secure(true)
+            //     .sameSite("None")
+            //     .maxAge(1800)
+            //     .build();
+            // httpResponse.addHeader("Set-Cookie", cookie.toString());
 
             return ResponseEntity.ok(new ResponseDTO<>("로그인 성공", null));
         } catch (BadCredentialsException e) {

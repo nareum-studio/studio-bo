@@ -25,6 +25,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // MariaDB
@@ -37,10 +38,18 @@ dependencies {
     implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.4.0")
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
 
+    // AOP
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+
+    // DevTools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

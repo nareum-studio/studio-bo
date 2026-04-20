@@ -1,5 +1,7 @@
 package com.nareumadmin.security;
 
+import com.nareumadmin.handler.CustomAccessDeniedHandler;
+import com.nareumadmin.handler.CustomAuthenticationEntryPoint;
 import com.nareumadmin.service.CustomUserDetailsService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +28,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             // CSRF - 쿠키 방식 사용 시 설정 필요
-            .csrf(csrf -> csrf.disable()
-                // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                // .ignoringRequestMatchers("/auth/**")
-            )
+            // .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            //     .ignoringRequestMatchers("/auth/**")
+            // )
+            .csrf(AbstractHttpConfigurer::disable)
             // 세션 사용 (쿠키로 세션 ID 전달)
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -53,17 +57,9 @@ public class SecurityConfig {
                     res.setStatus(200);
                     res.setContentType("application/json;charset=UTF-8");
                     res.getWriter().write("{\"message\":\"로그아웃 성공\"}");
-                }));
-            // .exceptionHandling(
-            //     ex -> ex.authenticationEntryPoint((request, response, authException) -> {
-            //         response.setStatus(401);
-            //         response.setContentType("application/json;charset=UTF-8");
-            //         response.getWriter().write("{\"message\": \"로그인이 필요합니다.\"}");
-            //     }).accessDeniedHandler((request, response, accessDeniedException) -> {
-            //         response.setStatus(403);
-            //         response.setContentType("application/json;charset=UTF-8");
-            //         response.getWriter().write("{\"message\": \"권한이 없습니다.\"}");
-            //     }));
+                }))
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler));
 
         return http.build();
     }
@@ -77,9 +73,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // config.setAllowedOrigins(List.of("*")); // 프론트 주소
-        config.setAllowedOriginPatterns(List.of("*")); // 테스트를 위한 설정
-        config.setAllowedMethods(List.of("*"));
+        config.setAllowedOrigins(List.of("https://www.nareumdaumm.com", "http://localhost:3000")); // 프론트 주소
+        // config.setAllowedOriginPatterns(List.of("*")); // 테스트를 위한 설정
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 

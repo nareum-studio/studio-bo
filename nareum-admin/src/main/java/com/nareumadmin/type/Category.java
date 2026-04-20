@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 
 public enum Category {
-    PROFILE, KIDS, BALLET;
+    PROFILE, KIDS, BALLET, ARTISTIC;
 }

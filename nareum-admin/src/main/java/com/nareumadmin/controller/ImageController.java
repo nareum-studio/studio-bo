@@ -5,6 +5,7 @@ import com.nareumadmin.dto.ImageDTO.UploadResponse;
 import com.nareumadmin.service.ImageService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/image")
+@Slf4j
 public class ImageController {
 
     private final ImageService imageService;
@@ -46,6 +48,6 @@ public class ImageController {
         @RequestParam(required = false) List<Long> deleteImages
     ) {
         List<UploadResponse> responses = imageService.updateFiles(files, category, deleteImages);
-        return ResponseEntity.ok(new ResponseDTO<>("이미지 수정 성공", responses));
+        return ResponseEntity.ok(new ResponseDTO<>("변경사항 저장 성공", responses));
     }
 }

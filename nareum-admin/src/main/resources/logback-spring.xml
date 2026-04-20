@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+
+	<!-- 로그 파일 저장 경로 -->
+	<property name="LOG_HOME" value="/home/ec2-user/nareum-studio/nareum-admin/logs/info" />
+	<property name="LOG_FILE" value="app.log" />
+	<property name="ERROR_LOG_HOME" value="/home/ec2-user/nareum-studio/nareum-admin/logs/error" />
+	<property name="ERROR_LOG_FILE" value="error.log" />
+	<property name="MAX_HISTORY" value="30" />
+	<property name="MAX_FILE_SIZE" value="10MB" />
+	
+	<!-- 콘솔 로그 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 파일 로그 with Rolling -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${LOG_FILE}</file>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 일자별 로그 파일 이름 -->
+			<fileNamePattern>${LOG_HOME}/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!-- 로그 파일 최대 보관 기간 (30일) -->
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+			<totalSizeCap>1GB</totalSizeCap>
+		</rollingPolicy>
+		
+		<encoder>
+			<!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- ERROR 로그 전용 파일 로그 -->
+	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${ERROR_LOG_HOME}/${ERROR_LOG_FILE}</file>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${ERROR_LOG_HOME}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+			<totalSizeCap>500MB</totalSizeCap>
+		</rollingPolicy>
+		
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 로그 레벨 설정 -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="ERROR_FILE" />
+	</root>
+	
+	<!-- 패키지별 로깅 상세 수준 -->
+	<!--<logger name="com.tm.example" level="DEBUG" />-->
+</configuration>

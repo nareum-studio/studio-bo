@@ -2,7 +2,6 @@ package com.nareumadmin.dto;
 
 import com.nareumadmin.domain.Image;
 import com.nareumadmin.type.Category;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,9 @@ public class ImageDTO {
     @Builder
     public static class UploadResult {
 
-        private URL url;
+        private String url;
         private String s3Key;
+        private String originalFileName;
     }
 
     @Getter

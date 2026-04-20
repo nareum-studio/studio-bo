@@ -8,6 +8,7 @@ import com.nareumadmin.type.Category;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ImageService {
 
     private final ImageMapper imageMapper;
@@ -26,15 +28,17 @@ public class ImageService {
     }
 
     public List<UploadResponse> uploadFiles(List<MultipartFile> files, String category) {
+        log.info("{}개의 이미지 업로드", files.size());
+
         return files.stream()
             .map(file -> {
                 UploadResult uploadResult = s3Service.upload(file, category);
-                String originalName = file.getOriginalFilename();
-                String extension = getFileExtension(originalName);
+                String originalFileName = uploadResult.getOriginalFileName();
+                String extension = getFileExtension(originalFileName);
 
                 Image uploadImage = Image.builder()
-                    .originalName(originalName)
-                    .url(uploadResult.getUrl().toString())
+                    .originalName(originalFileName)
+                    .url(uploadResult.getUrl())
                     .s3Key(uploadResult.getS3Key())
                     .category(Category.valueOf(category))
                     .extension(extension)
@@ -63,6 +67,8 @@ public class ImageService {
     }
 
     public void deleteFiles(List<Long> fileIds) {
+        log.info("{}개의 이미지 삭제", fileIds.size());
+
         List<Image> images = imageMapper.findByIds(fileIds);
 
         // S3에서 삭제
